@@ -23,8 +23,7 @@ app.post('/api/notes', ( req, res) => {
         title: req.body.title,
         text: req.body.text
     };
-    const result = db;
-    result.push(note);
+    db.push(note);
     fs.writeFileSync(
         path.join(__dirname, './db/db.json'),
         JSON.stringify(db, null, 2)
@@ -34,13 +33,13 @@ app.post('/api/notes', ( req, res) => {
 });
 
 app.delete('/api/notes/:id', (req, res) => {
-    const result = db;
-    result.splice(req.params.id, 1);
+    const result = db.findIndex(ob => ob.id === req.params.id);
+    db.splice(result, 1);
     fs.writeFileSync(
         path.join(__dirname, './db/db.json'),
         JSON.stringify(db, null, 2)
     );
-    res.send(req.params.id);
+    res.json(req.body);
 });
 
 //HTML Routes
